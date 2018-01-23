@@ -7,13 +7,20 @@ export default StyleSheet.create({
     // paddingTop: 25,
     // paddingBottom: 25,
   },
-  headertext:{
+  headertext: {
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: '500',
     marginTop: 50,
     fontSize: 40,
     color: Colors.white,
     zIndex: 999,
+  },
+  numberofresults: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.8)',
+    zIndex: 999,
+    marginTop: 0,
   },
   list: {
     marginTop: 50,

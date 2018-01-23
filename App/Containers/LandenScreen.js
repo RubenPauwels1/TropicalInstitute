@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Text, FlatList, KeyboardAvoidingView, Image, Button } from 'react-native'
+import { ScrollView, View, Text, FlatList, KeyboardAvoidingView, Image, Button, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import API from '../Services/Api'
 import ListItem from './../Components/ListItem'
@@ -37,16 +37,17 @@ class LandenScreen extends Component {
   oneScreensWorth = 20
 
   render () {
-    const title = "landen"
+    const title = "Alle Landen"
+    const aantallanden = Object.keys(this.state.landen).length
     const { navigate } = this.props.navigation
-    console.log(navigate)
 
     if(this.state.loading === false){
       return (
         <ScrollView style={styles.container}>
           <KeyboardAvoidingView behavior='position'>
 
-          <Text style={styles.headertext}>{title.toUpperCase()}</Text>
+          <Text style={styles.headertext}>{title /*.toUpperCase()*/}</Text>
+          <Text style={styles.numberofresults}>{aantallanden} RESULTATEN</Text>
 
             <Image
               style={styles.back}
@@ -64,7 +65,9 @@ class LandenScreen extends Component {
             keyExtractor={item => item.id}
             initialNumToRender={this.oneScreensWorth}
             renderItem={({item}) =>
+            <TouchableOpacity onPress={() => navigate('LaunchScreen', { land: item })}>
               <ListItem item={item} />
+            </TouchableOpacity>
             }
           />
 
