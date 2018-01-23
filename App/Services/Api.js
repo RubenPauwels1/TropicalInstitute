@@ -2,7 +2,7 @@
 import apisauce from 'apisauce'
 
 // our "constructor"
-const create = (baseURL = 'https://api.github.com/') => {
+const create = (baseURL = 'https://fluxit.be/stage/stage6/wp-json/wp/v2/') => {
   // ------
   // STEP 1
   // ------
@@ -35,8 +35,7 @@ const create = (baseURL = 'https://api.github.com/') => {
   // way at this level.
   //
   const getRoot = () => api.get('')
-  const getRate = () => api.get('rate_limit')
-  const getUser = (username) => api.get('search/users', {q: username})
+  const getLanden = () => api.get('landen?order=asc&orderby=slug&_embed')
 
   // ------
   // STEP 3
@@ -53,8 +52,7 @@ const create = (baseURL = 'https://api.github.com/') => {
   return {
     // a list of the API functions from step 2
     getRoot,
-    getRate,
-    getUser
+    getLanden
   }
 }
 
