@@ -54,18 +54,13 @@ class LandenScreen extends Component {
               source={require('./../Images/b-top.png')}
             />
 
-            {/*<Button
-              onPress={() => navigate('LaunchScreen')}
-              title="to Launch!"
-            />*/}
-
             <FlatList
             style={styles.list}
             data={this.state.landen}
             keyExtractor={item => item.id}
             initialNumToRender={this.oneScreensWorth}
             renderItem={({item}) =>
-            <TouchableOpacity onPress={() => navigate('LaunchScreen', { land: item })}>
+            <TouchableOpacity onPress={() => navigate('LandenDetailScreen', { land: item })}>
               <ListItem item={item} />
             </TouchableOpacity>
             }

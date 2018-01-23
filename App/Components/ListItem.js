@@ -27,7 +27,6 @@ export default class ListItem extends Component {
             style={styles.img}
             source={{uri: item._embedded['wp:featuredmedia'][0].source_url}}
           />
-          {/* <Text style={styles.itemz}>{item.land_ziektes.map(i => <Text key={i.ID}>#{i.post_title} </Text>)}</Text> */}
       </View>
     )
   }
