@@ -21,7 +21,10 @@ const colors = {
   eggplant: '#251a34',
   border: '#483F53',
   banner: '#5F3E63',
-  text: '#E0D7E5'
+  text: '#E0D7E5',
+  white: '#fff',
+  flux: 'rgb(0,188,242)',
+  fluxTransparent: 'rgba(0,188,242,0.9)',
 }
 
 export default colors

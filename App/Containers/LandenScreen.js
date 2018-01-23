@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Text, FlatList, KeyboardAvoidingView } from 'react-native'
+import { ScrollView, View, Text, FlatList, KeyboardAvoidingView, Image, Button } from 'react-native'
 import { connect } from 'react-redux'
 import API from '../Services/Api'
+import ListItem from './../Components/ListItem'
 
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -30,21 +31,43 @@ class LandenScreen extends Component {
     })
   }
 
+  renderEmpty = () =>
+    <Text style={styles.label}> - Nothing to See Here - </Text>
+
+  oneScreensWorth = 20
+
   render () {
+    const title = "landen"
+    const { navigate } = this.props.navigation
+    console.log(navigate)
+
     if(this.state.loading === false){
       return (
         <ScrollView style={styles.container}>
           <KeyboardAvoidingView behavior='position'>
-            <Text>LandenScreen</Text>
+
+          <Text style={styles.headertext}>{title.toUpperCase()}</Text>
+
+            <Image
+              style={styles.back}
+              source={require('./../Images/b-top.png')}
+            />
+
+            {/*<Button
+              onPress={() => navigate('LaunchScreen')}
+              title="to Launch!"
+            />*/}
+
             <FlatList
+            style={styles.list}
             data={this.state.landen}
             keyExtractor={item => item.id}
+            initialNumToRender={this.oneScreensWorth}
             renderItem={({item}) =>
-            <View>
-              <Text style={styles.item}>{item.id} {item.title.rendered}</Text>
-            </View>}
+              <ListItem item={item} />
+            }
           />
-          {console.log(this.state.landen)}
+
           </KeyboardAvoidingView>
         </ScrollView>
       )
