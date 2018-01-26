@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
 import { View, Text, Image } from 'react-native'
 import styles from './Styles/LandDetailStyle'
+import striptags from 'striptags'
 
 export default class LandDetail extends Component {
   // // Prop type warnings
@@ -25,13 +26,18 @@ export default class LandDetail extends Component {
             style={styles.img}
             source={{uri: land._embedded['wp:featuredmedia'][0].source_url}}
           />
-          <Text style={styles.content}>{land.content.rendered}</Text>
+          <Text style={styles.content}>{striptags(land.content.rendered)}</Text>
         </View>
-        <View style={styles.container}>
-          <Text style={styles.content}>
-            <Text style={styles.itemz}>{land.land_ziektes.map(i => <Text key={i.ID}>{i.post_title} </Text>)}</Text>
-          </Text>
-        </View>
+
+              {land.land_ziektes.map(i =>
+                <View style={styles.container} key={i.ID}>
+                    <View style={styles.itemz}>
+                        <Text style={[styles.content, styles.ziektetitle]}>{i.post_title}</Text>
+                        <Text style={styles.content}>{striptags(i.post_content)}</Text>
+                    </View>
+                </View>
+              )}
+
       </View>
     )
   }

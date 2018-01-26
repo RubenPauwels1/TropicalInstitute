@@ -22,5 +22,8 @@ export default StyleSheet.create({
   },
   content: {
     padding: 10,
+  },
+  ziektetitle:{
+    fontSize: 22,
   }
 })

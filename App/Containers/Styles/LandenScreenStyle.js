@@ -29,5 +29,14 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#ccc',
+    padding: 10,
   }
 })

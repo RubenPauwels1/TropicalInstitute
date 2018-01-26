@@ -1,11 +1,22 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Text, FlatList, KeyboardAvoidingView, Image, Button, TouchableOpacity } from 'react-native'
+import {
+  ScrollView,
+  View,
+  Text,
+  FlatList,
+  KeyboardAvoidingView,
+  Image,
+  Button,
+  TouchableOpacity,
+  ActivityIndicator,
+ } from 'react-native'
 import { connect } from 'react-redux'
 import API from '../Services/Api'
 import ListItem from './../Components/ListItem'
 
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
+import { tropicalInstituteRequest } from '../Redux/TropicalInstituteRedux'
 
 // Styles
 import styles from './Styles/LandenScreenStyle'
@@ -16,7 +27,7 @@ class LandenScreen extends Component {
 
     this.state = {
       landen: '',
-      loading: true,
+      fetching: true,
     }
 
     this.getData();
@@ -27,9 +38,20 @@ class LandenScreen extends Component {
     const landen = await api.getLanden()
     this.setState({
       landen: landen.data,
-      loading: false,
+      fetching: false,
     })
   }
+
+  //TODO: IMPLEMENT RIGHT
+  componentWillReceiveProps (newProps) {
+    console.log(newProps)
+    if (newProps.landen) {
+      this.setState(prevState => ({
+        landen: prevState.dataSource.cloneWithRows(newProps.landen)
+      }))
+    }
+  }
+  //END TODO
 
   renderEmpty = () =>
     <Text style={styles.label}> - Nothing to See Here - </Text>
@@ -38,12 +60,13 @@ class LandenScreen extends Component {
 
   render () {
     const title = "Alle Landen"
-    const aantallanden = Object.keys(this.state.landen).length
+    console.log(this.state.landen)
+    const aantallanden = this.state.landen.length
     const { navigate } = this.props.navigation
 
-    if(this.state.loading === false){
+    if(this.state.fetching === false){
       return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView behavior='position'>
 
           <Text style={styles.headertext}>{title /*.toUpperCase()*/}</Text>
@@ -60,7 +83,7 @@ class LandenScreen extends Component {
             keyExtractor={item => item.id}
             initialNumToRender={this.oneScreensWorth}
             renderItem={({item}) =>
-            <TouchableOpacity onPress={() => navigate('LandenDetailScreen', { land: item })}>
+            <TouchableOpacity onPress={() => navigate('LandenDetailScreen', { land: item })} delayPressIn={50}>
               <ListItem item={item} />
             </TouchableOpacity>
             }
@@ -71,11 +94,12 @@ class LandenScreen extends Component {
       )
     } else {
       return (
-        <ScrollView style={styles.container}>
+        <View style={styles.loading}>
           <KeyboardAvoidingView behavior='position'>
-            <Text>Loading data...</Text>
+              <Text style={styles.loadingText}>Exploring the world</Text>
+              <ActivityIndicator size="small" color="#00BCF2" />
           </KeyboardAvoidingView>
-        </ScrollView>
+        </View>
       )
     }
   }
