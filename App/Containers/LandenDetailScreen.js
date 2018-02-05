@@ -12,7 +12,7 @@ class LandenDetailScreen extends Component {
 
     render () {
 
-    console.log(this.props.navigation)
+    // console.log(this.props.navigation)
     const land = this.props.navigation.state.params.land
 
     const mod_date = new Date(land.modified_gmt)

@@ -9,59 +9,72 @@ import {
   Button,
   TouchableOpacity,
   ActivityIndicator,
- } from 'react-native'
-import { connect } from 'react-redux'
-import API from '../Services/Api'
+  AppState,
+} from 'react-native'
 import ListItem from './../Components/ListItem'
 
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-import { tropicalInstituteRequest } from '../Redux/TropicalInstituteRedux'
+import TropicalInstituteActions from '../Redux/TropicalInstituteRedux'
+import { connect } from 'react-redux'
+
 
 // Styles
 import styles from './Styles/LandenScreenStyle'
 
 class LandenScreen extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+
+    const { landen } = props
 
     this.state = {
-      landen: '',
       fetching: true,
+      appState: '',
+      data: '',
     }
 
-    this.getData();
+    // this.getData();
   }
 
-  getData = async () => {
-    const api = API.create()
-    const landen = await api.getLanden()
+  // getData = async () => {
+  //   const api = API.create()
+  //   const landen = await api.getLanden()
+  //   this.setState({
+  //     landen: landen.data,
+  //     fetching: false,
+  //   })
+  // }
+
+  componentDidMount () {
+    AppState.addEventListener('change', this._handleAppStateChange)
+
+    const { data } = this.state
+  }
+
+  componentWillUnmount () {
+    AppState.removeEventListener('change', this._handleAppStateChange)
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    const { appState } = this.state
+    if (appState.match(/inactive|background/) && nextAppState === 'active') {
+      this.props.getLanden()
+    }
     this.setState({
-      landen: landen.data,
+      appState: nextAppState,
       fetching: false,
     })
   }
 
-  //TODO: IMPLEMENT RIGHT
   componentWillReceiveProps (newProps) {
-    console.log(newProps)
-    if (newProps.landen) {
-      this.setState(prevState => ({
-        landen: prevState.dataSource.cloneWithRows(newProps.landen)
-      }))
-    }
+    const { landen } = newProps
   }
-  //END TODO
-
-  renderEmpty = () =>
-    <Text style={styles.label}> - Nothing to See Here - </Text>
 
   oneScreensWorth = 20
 
   render () {
     const title = "Alle Landen"
-    console.log(this.state.landen)
-    const aantallanden = this.state.landen.length
+    // console.log(this.props.landen)
+    console.log(this)
     const { navigate } = this.props.navigation
 
     if(this.state.fetching === false){
@@ -70,7 +83,7 @@ class LandenScreen extends Component {
           <KeyboardAvoidingView behavior='position'>
 
           <Text style={styles.headertext}>{title /*.toUpperCase()*/}</Text>
-          <Text style={styles.numberofresults}>{aantallanden} RESULTATEN</Text>
+          <Text style={styles.numberofresults}>ALLE RESULTATEN</Text>
 
             <Image
               style={styles.back}
@@ -79,11 +92,11 @@ class LandenScreen extends Component {
 
             <FlatList
             style={styles.list}
-            data={this.state.landen}
+            data={this.props.landen.landen}
             keyExtractor={item => item.id}
             initialNumToRender={this.oneScreensWorth}
             renderItem={({item}) =>
-            <TouchableOpacity onPress={() => navigate('LandenDetailScreen', { land: item })} delayPressIn={50}>
+            <TouchableOpacity onPress={() => navigate('LandenDetailScreen', { land: item })} delayPressIn={30}>
               <ListItem item={item} />
             </TouchableOpacity>
             }
@@ -107,11 +120,13 @@ class LandenScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    landen: state.landen,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getLanden: () => dispatch(TropicalInstituteActions.getLanden()),
   }
 }
 

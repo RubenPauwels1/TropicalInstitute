@@ -34,7 +34,6 @@ const create = (baseURL = 'https://fluxit.be/stage/stage6/wp-json/wp/v2/') => {
   // Since we can't hide from that, we embrace it by getting out of the
   // way at this level.
   //
-  const getRoot = () => api.get('')
   const getLanden = () => api.get('landen?order=asc&orderby=slug&_embed')
 
   // ------
@@ -51,7 +50,6 @@ const create = (baseURL = 'https://fluxit.be/stage/stage6/wp-json/wp/v2/') => {
   //
   return {
     // a list of the API functions from step 2
-    getRoot,
     getLanden
   }
 }
