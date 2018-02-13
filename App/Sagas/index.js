@@ -19,9 +19,9 @@ import FixtureAPI from '../Services/FixtureApi'
 // to the sagas which need it.
 
 if(!DebugConfig.useFixtures){
-  console.log('DO NOT USE FIXTURES!');
+  console.tron.log('We are NOT using fixtures here');
 } else {
-  console.log('USE FIXTURES!');
+  console.tron.log('We are using fixtures here');
 }
 
 const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
@@ -36,7 +36,7 @@ export default function * root () {
   ]
 
   if(DebugConfig.getAPI) {
-    console.log('DEBUGCONFIG: USING GETAPI: TRUE')
+    console.tron.log('DEBUGCONFIG -> GetAPI: true')
     sagaIndex.push(takeLatest(TropicalInstituteTypes.FETCH_API, getLandenFromAPI, api))
   }
 
